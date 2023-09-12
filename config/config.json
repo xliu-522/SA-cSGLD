@@ -1,0 +1,14 @@
+{
+    "data": {
+      "data_file_name": "",
+      "train_test_split_perc": 0.8
+      },
+    "sampler": {
+        "sampler_options": ["SASGLD", "SACSGLD"],
+        "sampler": "SASGLD"
+    },
+    "model": {
+        "model_options": ["lenet5", "Alexnet"],
+        "model_name": ["Alexnet"]
+    }
+}
