@@ -18,5 +18,5 @@ def main():
     data_obj = Data(config)
     data_obj.read()
 
-    if __name__ == "__main__":
-        main()
+if __name__ == "__main__":
+    main()
