@@ -1,5 +1,6 @@
 import argparse
 import json
+import torch
 from src.data import Data
 #from unique_names_generator import get_random_name
 
@@ -13,10 +14,22 @@ def main():
             #config['model']["random_name"] = get_random_name().replace(" ", "_")
     except:
         print("Error in config")
+    
+    print("**** Checking device ****")
+    device = (
+        "cuda"
+        if torch.cuda.is_available()
+        else "mps"
+        if torch.backends.mps.is_available()
+        else "cpu"
+    )
+    print("Device: ", device)
 
     print("**** Reading data ****")
     data_obj = Data(config)
     data_obj.read()
+
+
 
 if __name__ == "__main__":
     main()
