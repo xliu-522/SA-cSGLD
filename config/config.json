@@ -1,6 +1,6 @@
 {
     "data": {
-      "data_file_name": "",
+      "data_path": "./data",
       "train_test_split_perc": 0.8
       },
     "sampler": {
