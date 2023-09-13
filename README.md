@@ -1,5 +1,5 @@
 # SA-cSGLD
-A cyclical version of a fst MCMC sampler for sparse Bayesian deep learning.
+A cyclical version of a fast MCMC sampler for sparse Bayesian deep learning.
 
 #### install env
 ```
