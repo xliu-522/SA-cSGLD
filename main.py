@@ -1,7 +1,7 @@
 import argparse
 import json
 from src.data import Data
-from unique_names_generator import get_random_name
+#from unique_names_generator import get_random_name
 
 def main():
     parser = argparse.ArgumentParser()
@@ -10,7 +10,7 @@ def main():
     try:
         with open(args.config, ) as config:
             config = json.load(config)
-            config['model']["random_name"] = get_random_name().replace(" ", "_")
+            #config['model']["random_name"] = get_random_name().replace(" ", "_")
     except:
         print("Error in config")
 
