@@ -28,4 +28,5 @@ class Data(object):
         # We define a set of data loaders that we can use for various purposes later.
         train_dataloader = torch.utils.data.DataLoader(train_dataset, batch_size=128, shuffle=True, drop_last=True, pin_memory=True, num_workers=4)
         test_dataloader = torch.utils.data.DataLoader(test_dataset, batch_size=128, shuffle=False, drop_last=False, num_workers=4)
+        print(len(train_dataset))
         print(len(train_dataloader))
