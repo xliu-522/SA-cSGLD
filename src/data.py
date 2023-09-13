@@ -17,6 +17,7 @@ class Data(object):
         train_dataset = datasets.CIFAR10(root=self.data_path, train=True, download=True)
         self.data_mean = (train_dataset.data / 255.0).mean(axis=(0,1,2))
         self.data_std = (train_dataset.data / 255.0).std(axis=(0,1,2))
+        print(self.data_mean)
         data_transform = transforms.Compose([transforms.ToTensor(), resize_transform,transforms.Normalize(self.data_mean, self.data_std)])
 
         # Loading the training dataset. 
