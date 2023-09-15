@@ -2,6 +2,8 @@ import argparse
 import json
 import torch
 from src.data import Data
+from src.train import mcmc_train
+from model.AlexNet import AlexNet
 #from unique_names_generator import get_random_name
 
 def main():
@@ -28,6 +30,11 @@ def main():
     print("**** Reading data ****")
     data_obj = Data(config)
     data_obj.read()
+
+
+    model = AlexNet().to(device)
+    params = model.parameters()
+    trainer = mcmc_train(device=device, params=params, data=data_obj.train_dataloader, config=config)
 
 
 
