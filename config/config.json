@@ -1,7 +1,9 @@
 {
     "data": {
       "data_path": "./data",
-      "train_test_split_perc": 0.8
+      "batch_size": 128,
+      "train_test_split_perc": 0.8,
+      "image_size": 224
       },
     "sampler": {
         "sampler_options": ["SASGLD", "SACSGLD"],
@@ -15,5 +17,9 @@
     "model": {
         "model_options": ["lenet5", "AlexNet"],
         "model_name": "AlexNet"
+    }, 
+    "training":{
+        "epoches": 1,
+        "gamma": 2e-8
     }
 }
