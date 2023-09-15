@@ -26,7 +26,6 @@ class Data(object):
         test_dataset = datasets.CIFAR10(root=self.data_path, train=False, transform=data_transform, download=True)
 
         # We define a set of data loaders that we can use for various purposes later.
-        train_dataloader = torch.utils.data.DataLoader(train_dataset, batch_size=128, shuffle=True, drop_last=True, pin_memory=True, num_workers=4)
-        test_dataloader = torch.utils.data.DataLoader(test_dataset, batch_size=128, shuffle=False, drop_last=False, num_workers=4)
-        print(len(train_dataset))
-        print(len(train_dataloader))
+        self.train_dataloader = torch.utils.data.DataLoader(train_dataset, batch_size=128, shuffle=True, drop_last=True, pin_memory=True, num_workers=4)
+        self.test_dataloader = torch.utils.data.DataLoader(test_dataset, batch_size=128, shuffle=False, drop_last=False, num_workers=4)
+        
