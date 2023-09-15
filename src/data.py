@@ -21,11 +21,11 @@ class Data(object):
         data_transform = transforms.Compose([transforms.ToTensor(), resize_transform,transforms.Normalize(self.data_mean, self.data_std)])
 
         # Loading the training dataset. 
-        train_dataset = datasets.CIFAR10(root=self.data_path, train=True, transform=data_transform, download=True)
+        self.train_dataset = datasets.CIFAR10(root=self.data_path, train=True, transform=data_transform, download=True)
         # Loading the test set
-        test_dataset = datasets.CIFAR10(root=self.data_path, train=False, transform=data_transform, download=True)
+        self.test_dataset = datasets.CIFAR10(root=self.data_path, train=False, transform=data_transform, download=True)
 
         # We define a set of data loaders that we can use for various purposes later.
-        self.train_dataloader = torch.utils.data.DataLoader(train_dataset, batch_size=128, shuffle=True, drop_last=True, pin_memory=True, num_workers=4)
-        self.test_dataloader = torch.utils.data.DataLoader(test_dataset, batch_size=128, shuffle=False, drop_last=False, num_workers=4)
+        self.train_dataloader = torch.utils.data.DataLoader(self.train_dataset, batch_size=128, shuffle=True, drop_last=True, pin_memory=True, num_workers=4)
+        self.test_dataloader = torch.utils.data.DataLoader(self.test_dataset, batch_size=128, shuffle=False, drop_last=False, num_workers=4)
         
