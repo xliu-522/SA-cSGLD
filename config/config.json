@@ -1,7 +1,6 @@
 {
     "data": {
       "data_path": "./data",
-      "spleSize": 50000,
       "train_test_split_perc": 0.8
       },
     "sampler": {
@@ -14,7 +13,7 @@
         "u": 50
     },
     "model": {
-        "model_options": ["lenet5", "Alexnet"],
-        "model_name": ["Alexnet"]
+        "model_options": ["lenet5", "AlexNet"],
+        "model_name": "AlexNet"
     }
 }
