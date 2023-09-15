@@ -15,8 +15,7 @@ class mcmc_train(object):
         self.config = config
         self.device = device
         self.lr = torch.tensor(config["sampler"]["learning_rate"]).to(self.device)
-        print(self.lr)
-        self.sample_size = config["data"]["spleSize"]
+        self.sample_size = config["data"]["sample_size"]
         self.update_rate = config["sampler"]["update_rate"]
     
     def train_it(self):
