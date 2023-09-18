@@ -2,6 +2,7 @@
     "data": {
       "data_path": "./data",
       "batch_size": 128,
+      "num_channels": 3,
       "train_test_split_perc": 0.8,
       "image_size": 224
       },
