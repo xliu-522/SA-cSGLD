@@ -44,17 +44,10 @@ def main():
     else:
         print(f"Model {model_name} not found.")
 
+    # Initialize the neural network with a random dummy batch (Lazy)
     model = model.to(device)
-    
-    # Dummy batch size, number of channels, height, and width
-    batch_size = 128  # Adjust as needed
-    num_channels = 3
-    height = 224
-    width = 224
-
     # Create a random dummy batch with the specified shape
-    dummy_batch = torch.randn(batch_size, num_channels, height, width).to(device)
-
+    dummy_batch = torch.randn(config["data"]["batch_size"], config["data"]["num_channels"], config["data"]["image_size"], config["data"]["image_size"]).to(device)
     model(dummy_batch)
 
     config["model"]["total_par"] = sum(P.numel() for P in model.parameters() if P.requires_grad)
