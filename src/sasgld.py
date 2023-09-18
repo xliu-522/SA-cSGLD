@@ -14,8 +14,8 @@ class sasgldSampler(object):
     def __init__(self, device, config, model):
         self.device = device
         self.model = model
-        self.lr = torch.from_numpy(np.array(config["sampler"]["learning_rate"])).to(dtype=torch.float32).to(self.device)
-        self.gamma = torch.from_numpy(np.array(config["training"]["gamma"])).to(dtype=torch.float32).to(self.device)
+        self.lr = torch.tensor(config["sampler"]["learning_rate"], dtype=torch.float32).to(self.device)
+        self.gamma = torch.tensor(config["training"]["gamma"], dtype=torch.float32).to(self.device)
         self.rho_0 = config["sampler"]["rho_0"]
         self.rho_1 = config["sampler"]["rho_1"]
         self.spleSize = config["data"]["sample_size"]
@@ -91,5 +91,5 @@ class sasgldSampler(object):
                 i+=1
                 continue
             P.data = P.data*self.params_struct[i].to(self.device)
-            i+=1
+            i+=1 
         return self.model
