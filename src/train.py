@@ -27,6 +27,7 @@ class mcmc_train_test(object):
     def train_it(self):
         print("training here!")
         for batch, (X, y) in enumerate(self.train_dataloader):
+            print("Batch: ", batch)
             X = X.to(self.device)
             y = y.to(self.device)
             self.sampler = sasgldSampler(device=self.device, config=self.config, model=self.model)
