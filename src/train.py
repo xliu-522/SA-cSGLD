@@ -45,12 +45,14 @@ class mcmc_train_test(object):
         num_batches = len(self.test_dataloader)
         updated_model = self.sampler.sparsify_model_params()
         with torch.no_grad():
+            test_loss = 0
+            correct = 0
             for X, y in self.test_dataloader:
                 X = X.to(self.device) 
-            y = y.to(self.device)
-            pred = updated_model(X)
-            test_loss += self.loss_fn(pred, y).item()
-            correct += (pred.argmax(1) == y).type(torch.float).sum().item() 
+                y = y.to(self.device)
+                pred = updated_model(X)
+                test_loss += self.loss_fn(pred, y).item()
+                correct += (pred.argmax(1) == y).type(torch.float).sum().item() 
         test_loss /= num_batches
         correct /= test_size
         print(f"Test Error: \n Accuracy: {(100*correct):>0.1f}%, Avg loss: {test_loss:>8f} \n")
