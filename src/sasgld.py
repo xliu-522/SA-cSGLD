@@ -29,7 +29,7 @@ class sasgldSampler(object):
         for P in self.model.parameters():
             if P.requires_grad:
                 self.params_struct[i] = torch.ones(size=P.shape)
-                self.J_vec[i] = torch.ceil(self.update_rate*torch.prod(P))
+                self.J_vec[i] = torch.ceil(self.update_rate*torch.prod(torch.tensor(P.shape)))
                 self.CoordSet[i] = torch.zeros(self.J_vec[i].numel())
             i+=1
 
@@ -46,15 +46,15 @@ class sasgldSampler(object):
             if P.grad is None: # We skip parameters without any gradients
                 i+=1
                 continue
-            self.CoordSet[i] = np.random.choice(a=P.numel(), size = self.J_vec[i], replace = False)
+            self.CoordSet[i] = np.random.choice(a=P.numel(), size = int(self.J_vec[i].item()), replace = False)
             i+=1
 
     def update_layer_param(self, P, struct):
-        gauss = torch.distributions.Normal(torch.zeros_like(P.data), torch.ones_like(P.data))
-        print(gauss)
+        gauss_dist = torch.distributions.Normal(torch.zeros_like(P.data), torch.ones_like(P.data))
+        gauss = gauss_dist.sample()
         index = struct==1
         P[struct==0].data = torch.sqrt(1/self.gamma)*gauss[struct==0]
-        g = - self.lr *(self.spleSize*P.grad[index] + self.rho_1*P[index]) + np.sqrt(2*self.lr)*gauss[index]
+        g = - self.lr *(self.spleSize*P.grad[index] + self.rho_1*P[index]) + torch.sqrt(2*self.lr)*gauss[index]
         P[index].data +=g
 
     @torch.no_grad()
@@ -90,6 +90,6 @@ class sasgldSampler(object):
             if P.grad is None: # We skip parameters without any gradients
                 i+=1
                 continue
-            P.data = P*self.param_struct[i]
+            P.data = P.data*self.params_struct[i].to(self.device)
             i+=1
         return self.model
