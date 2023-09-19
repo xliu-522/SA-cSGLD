@@ -3,7 +3,7 @@ import torch
 import random
 from scipy.special import expit, logit
 from torch import nn
-from torch.func import functional_call, grad
+#from torch.func import functional_call, grad
 from torch.utils.data import DataLoader
 from torchvision import datasets
 from torchvision.transforms import ToTensor
@@ -32,6 +32,7 @@ class sasgldSampler(object):
                 self.J_vec[i] = torch.ceil(self.update_rate*torch.prod(torch.tensor(P.shape)))
                 self.CoordSet[i] = torch.zeros(self.J_vec[i].numel())
             i+=1
+        self.a = self.u * np.log(self.total_par) + 0.5*np.log(self.rho_0/self.rho_1)
 
     def zero_grad(self):
         ## Set gradients of all parameters to zero
@@ -52,10 +53,14 @@ class sasgldSampler(object):
     def update_layer_param(self, P, struct):
         gauss_dist = torch.distributions.Normal(torch.zeros_like(P.data), torch.ones_like(P.data))
         gauss = gauss_dist.sample()
-        index = struct==1
-        P[struct==0].data = torch.sqrt(1/self.gamma)*gauss[struct==0]
-        g = - self.lr *(self.spleSize*P.grad[index] + self.rho_1*P[index]) + torch.sqrt(2*self.lr)*gauss[index]
-        P[index].data +=g
+        L = torch.sum(struct==0)
+        if L > 0:
+            P[struct==0].data = torch.sqrt(1/self.rho_0)*gauss[struct==0]
+        L = torch.sum(struct==1)
+        if L > 0:
+            index = struct==1
+            g = self.gamma * (- self.rho_1*P.data[index] + self.spleSize*P.grad[index]) + torch.sqrt(2*self.gamma)*gauss[index]
+            P[index].data +=g
 
     @torch.no_grad()
     def update_params(self):
@@ -69,9 +74,11 @@ class sasgldSampler(object):
             i+=1
             
     def update_layer_sparsity(self, P, struct, CoordSet):
-        weight = self.a + 0.5*(self.rho_1 - self.rho_0)*P[CoordSet]**2 - P.grad[CoordSet] *P[CoordSet]
-        prob = expit(-weight)
-        struct[CoordSet] = torch.rand(CoordSet.numel()) <= prob
+        Grad = P.grad.reshape(-1)[CoordSet]
+        Weights = P.data.reshape(-1)[CoordSet]
+        zz = self.a + 0.5*(self.rho_1 - self.rho_0)*Weights**2 - Grad *Weights
+        prob = torch.sigmoid(-zz)
+        struct.to(self.device).reshape(-1)[CoordSet] = torch.distributions.Binomial(1, prob).sample()
 
     @torch.no_grad()
     def update_sparsity(self):
