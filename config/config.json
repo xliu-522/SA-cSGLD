@@ -11,7 +11,7 @@
         "sampler": "SASGLD",
         "learning_rate": 1e-7,
         "update_rate": 0.05,
-        "rho_0": 50000,
+        "rho_0": 10000,
         "rho_1": 1,
         "u": 50
     },
@@ -20,7 +20,7 @@
         "model_name": "AlexNet"
     }, 
     "training":{
-        "epoches": 1,
-        "gamma": 2e-8
+        "epoches": 5,
+        "gamma": 1e-7
     }
 }
