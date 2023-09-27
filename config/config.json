@@ -1,26 +1,27 @@
 {
     "data": {
       "data_path": "./data",
-      "batch_size": 128,
+      "batch_size": 256,
       "num_channels": 3,
       "train_test_split_perc": 0.8,
       "image_size": 224
       },
     "sampler": {
-        "sampler_options": ["SASGLD", "SACSGLD"],
-        "sampler": "SASGLD",
+        "sampler_options": ["sasgld", "sacsgld"],
+        "sampler": "sasgld",
         "learning_rate": 1e-7,
-        "update_rate": 0.05,
+        "update_rate": 0.0002,
         "rho_0": 10000,
         "rho_1": 1,
-        "u": 50
+        "u": 10
     },
     "model": {
         "model_options": ["lenet5", "AlexNet"],
         "model_name": "AlexNet"
     }, 
     "training":{
-        "epoches": 5,
+        "epoches": 10,
+        "cycles": 300,
         "gamma": 1e-7
     }
 }
