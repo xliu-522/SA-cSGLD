@@ -22,13 +22,13 @@ class mcmc_train_test(object):
         self.update_rate = config["sampler"]["update_rate"]
         self.total_par = config["model"]["total_par"]
         self.batch_size = config["data"]["batch_size"]
-        self.cycles = config["sampler"]["C"]
+        self.cycles = config["training"]["cycles"]
         self.epoches = config["training"]["epoches"]
         self.loss_fn = nn.CrossEntropyLoss().to(self.device)
 
     def train_it(self):
         print("training here!")
-        if config["sampler"]["sampler"] == "sasgld":
+        if self.config["sampler"]["sampler"] == "sasgld":
             self.sampler = sasgldSampler(device=self.device, config=self.config, model=self.model)
             for t in range(self.epoches):
                 print(f"Epoch {t+1}\n-------------------------------")
@@ -42,7 +42,7 @@ class mcmc_train_test(object):
                     self.sampler.select_CoordSet()
                     self.sampler.update_sparsity()
                     self.sampler.zero_grad()
-        elif config["sampler"]["sampler"] == "sacsgld":
+        elif self.config["sampler"]["sampler"] == "sacsgld":
             self.sampler = sacsgldSampler(device=self.device, config=self.config, model=self.model)
 
     def test_it(self):
