@@ -51,14 +51,13 @@ def main():
     model(dummy_batch)
 
     config["model"]["total_par"] = sum(P.numel() for P in model.parameters() if P.requires_grad)
+    print(config["model"]["total_par"])
 
     trainer = mcmc_train_test(device=device, train_data=data_obj.train_dataloader, test_data = data_obj.test_dataloader, config=config, model=model)
-    epoches = config["training"]["epoches"]
+    
     print("**** Start training ****")
-    for t in range(epoches):
-        print(f"Epoch {t+1}\n-------------------------------")
-        trainer.train_it()
-        trainer.test_it()
+    trainer.train_it()
+    trainer.test_it()
 
 
 
