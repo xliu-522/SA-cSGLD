@@ -1,3 +1,4 @@
+import os
 import argparse
 import json
 import torch
@@ -6,6 +7,8 @@ from src.data import Data
 from src.train import mcmc_train_test
 import models
 import numpy as np
+import matplotlib.pyplot as plt
+from datetime import datetime
 #from unique_names_generator import get_random_name
 
 def main():
@@ -52,12 +55,52 @@ def main():
 
     config["model"]["total_par"] = sum(P.numel() for P in model.parameters() if P.requires_grad)
     print(config["model"]["total_par"])
+    
+    
+    print("**** Create directory ****")
+    # Get the current date and time
+    current_time = datetime.now()
 
-    trainer = mcmc_train_test(device=device, train_data=data_obj.train_dataloader, test_data = data_obj.test_dataloader, config=config, model=model)
+    # Format the current time as a string (adjust the format as needed)
+    time_string = current_time.strftime("%Y-%m-%d_%H-%M-%S")
+    
+    res_dir = f'./result/{config["sampler"]["sampler"]}_{time_string}'
+    if not os.path.exists(res_dir):
+        os.makedirs(res_dir)
+        print(f"Folder '{res_dir}' created.")
+    else:
+        print(f"Folder '{res_dir}' already exists.")
+
+    trainer = mcmc_train_test(device=device, res_dir=res_dir, train_data=data_obj.train_dataloader, test_data = data_obj.test_dataloader, config=config, model=model)
     
     print("**** Start training ****")
-    trainer.train_it()
-    trainer.test_it()
+    loss, acc, sparsity= trainer.train_it()
+    
+    np.save(f'{res_dir}/loss.npy',loss)
+    np.save(f'{res_dir}/accuracy.npy', acc)
+    
+    
+    plt.plot(loss)
+    plt.xlabel('Iterations')
+    plt.ylabel('Loss')
+    plt.title('Training Loss Curve')
+    plt.savefig(f'{res_dir}/loss.png')
+    plt.close()
+    plt.plot(acc)
+    plt.xlabel('Iterations')
+    plt.ylabel('Accuracy')
+    plt.title('Training accuracy Curve')
+    plt.savefig(f'{res_dir}/accuracy.png')
+    plt.close()
+    if config["sampler"]["sparse"]:
+        plt.plot(sparsity)
+        plt.xlabel('Iterations')
+        plt.ylabel('Sparsity')
+        plt.title('Sparsity Curve')
+        plt.savefig(f'./{res_dir}/sparsity.png')
+        np.save(f'{res_dir}/sparsity.npy', acc)
+    plt.close()
+    
 
 
 
