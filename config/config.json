@@ -7,13 +7,13 @@
       "image_size": 224
       },
     "sampler": {
-        "sampler_options": ["sasgld", "sacsgld"],
-        "sampler": "sasgld",
-        "learning_rate": 1e-7,
-        "update_rate": 0.0002,
+        "sampler_options": ["sasgld", "sacsgld", "sgld", "csgld"],
+        "sampler": "csgld",
+        "sparse": false,
+        "update_rate": 0.00,
         "rho_0": 10000,
         "rho_1": 1,
-        "u": 10
+        "u": 200
     },
     "model": {
         "model_options": ["lenet5", "AlexNet"],
@@ -21,7 +21,8 @@
     }, 
     "training":{
         "epoches": 10,
-        "cycles": 300,
-        "gamma": 1e-7
+        "cycles": 2,
+        "gamma": 1e-7,
+        "threshold": 5e-11
     }
 }
