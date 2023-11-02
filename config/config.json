@@ -1,28 +1,32 @@
 {
     "data": {
-      "data_path": "./data",
-      "batch_size": 256,
-      "num_channels": 3,
-      "train_test_split_perc": 0.8,
-      "image_size": 224
-      },
+        "data_path": "./data",
+        "dataset_option": ["cifar10", "fashionmnist"],
+        "dataset": "cifar10",
+        "batch_size": 128,
+        "num_channels": 3,
+        "train_test_split_perc": 0.8,
+        "image_size": 32
+        },
     "sampler": {
         "sampler_options": ["sasgld", "sacsgld", "sgld", "csgld"],
-        "sampler": "csgld",
-        "sparse": false,
-        "update_rate": 0.00,
+        "sampler": "sacsgld",
+        "sparse": true,
+        "update_rate": 0.001,
         "rho_0": 10000,
         "rho_1": 1,
-        "u": 200
+        "u": 50
     },
     "model": {
-        "model_options": ["lenet5", "AlexNet"],
-        "model_name": "AlexNet"
+        "model_options": ["LeNet5", "AlexNet", "VGG6", "ResNet18", "GoogLeNet"],
+        "model_name": "ResNet18"
     }, 
     "training":{
-        "epoches": 10,
-        "cycles": 2,
-        "gamma": 1e-7,
-        "threshold": 5e-11
+        "epoches": 300,
+        "numIter": 100000,
+        "cycles": 6,
+        "gamma": 5e-6,
+        "alpha_0": 0.5,
+        "threshold": 0.25
     }
 }
