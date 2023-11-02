@@ -1,8 +1,7 @@
 # Byte-compiled / optimized / DLL files
 __pycache__/
-<<<<<<< HEAD
 *.py[cod]
-
+.ipynb_checkpoints/
 # C extensions
 *.so
 
@@ -49,6 +48,3 @@ coverage.xml
 
 # Sphinx documentation
 docs/_build/
-=======
-*.py[cod]
->>>>>>> 63e36b58b4947a1fe6c01232a673406cfa1bd819
