@@ -49,9 +49,11 @@ def main():
 
     # Initialize the neural network with a random dummy batch (Lazy)
     model = model.to(device)
-    # Create a random dummy batch with the specified shape
-    dummy_batch = torch.randn(config["data"]["batch_size"], config["data"]["num_channels"], config["data"]["image_size"], config["data"]["image_size"]).to(device)
-    model(dummy_batch)
+    
+    # Create a random dummy batch with the specified shape for Alexnet
+    if model_name == "AlexNet":
+        dummy_batch = torch.randn(config["data"]["batch_size"], config["data"]["num_channels"], config["data"]["image_size"], config["data"]["image_size"]).to(device)
+        model(dummy_batch)
 
     config["model"]["total_par"] = sum(P.numel() for P in model.parameters() if P.requires_grad)
     print(config["model"]["total_par"])
@@ -64,7 +66,7 @@ def main():
     # Format the current time as a string (adjust the format as needed)
     time_string = current_time.strftime("%Y-%m-%d_%H-%M-%S")
     
-    res_dir = f'./result/{config["sampler"]["sampler"]}_{time_string}'
+    res_dir = f'./result/{config["sampler"]["sampler"]}_{config["model"]["model_name"]}_{config["data"]["dataset"]}_{config["training"]["gamma"]}_{config["training"]["epoches"]}_{config["training"]["cycles"]}_{time_string}'
     if not os.path.exists(res_dir):
         os.makedirs(res_dir)
         print(f"Folder '{res_dir}' created.")
@@ -83,13 +85,13 @@ def main():
     plt.plot(loss)
     plt.xlabel('Iterations')
     plt.ylabel('Loss')
-    plt.title('Training Loss Curve')
+    plt.title('Testing Loss Curve')
     plt.savefig(f'{res_dir}/loss.png')
     plt.close()
     plt.plot(acc)
     plt.xlabel('Iterations')
     plt.ylabel('Accuracy')
-    plt.title('Training accuracy Curve')
+    plt.title('Testing accuracy Curve')
     plt.savefig(f'{res_dir}/accuracy.png')
     plt.close()
     if config["sampler"]["sparse"]:
@@ -98,7 +100,7 @@ def main():
         plt.ylabel('Sparsity')
         plt.title('Sparsity Curve')
         plt.savefig(f'./{res_dir}/sparsity.png')
-        np.save(f'{res_dir}/sparsity.npy', acc)
+        np.save(f'{res_dir}/sparsity.npy', sparsity)
     plt.close()
     
 
