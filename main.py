@@ -1,4 +1,5 @@
 import os
+os.environ['PYTORCH_ENABLE_MPS_FALLBACK'] = '1'
 import argparse
 import json
 import torch
@@ -94,7 +95,7 @@ def main():
     plt.title('Testing accuracy Curve')
     plt.savefig(f'{res_dir}/accuracy.png')
     plt.close()
-    if config["sampler"]["sparse"]:
+    if config["sampler"]["sampler"] == "sasgld" or config["sampler"]["sampler"] == "sacsgld":
         plt.plot(sparsity)
         plt.xlabel('Iterations')
         plt.ylabel('Sparsity')
