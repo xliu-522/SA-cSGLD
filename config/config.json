@@ -10,8 +10,7 @@
         },
     "sampler": {
         "sampler_options": ["sasgld", "sacsgld", "sgld", "csgld"],
-        "sampler": "sacsgld",
-        "sparse": true,
+        "sampler": "sasgld",
         "update_rate": 0.001,
         "rho_0": 10000,
         "rho_1": 1,
@@ -19,14 +18,14 @@
     },
     "model": {
         "model_options": ["LeNet5", "AlexNet", "VGG6", "ResNet18", "GoogLeNet"],
-        "model_name": "ResNet18"
+        "model_name": "LeNet5"
     }, 
     "training":{
-        "epoches": 300,
+        "epoches": 10,
         "numIter": 100000,
         "cycles": 6,
         "gamma": 5e-6,
         "alpha_0": 0.5,
-        "threshold": 0.25
+        "threshold": 0.001
     }
 }
