@@ -14,3 +14,9 @@ conda activate SACSGLD_env
 git clone https://github.com/xliu-522/SA-cSGLD.git
 cd SA-cSGLD
 pip install -r requirements.txt
+```
+
+#### run the software
+```
+python main.py
+```
